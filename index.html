@@ -5,9 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Do-Do Dudes | Poop Removal Pros</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .logo-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .logo {
+      width: 260px; /* larger size */
+      max-width: 90%;
+      height: auto;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    }
+
+    .big-offer {
+      font-size: 2rem;
+      color: #ffffff;
+      background-color: #4CAF50;
+      padding: 10px 20px;
+      border-radius: 15px;
+      margin: 20px auto;
+      width: fit-content;
+      animation: pop 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes pop {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    .pricing {
+      background: #fffbe6;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 30px auto;
+      text-align: left;
+    }
+
+    .pricing h3 {
+      color: #3a603a;
+      margin-bottom: 10px;
+    }
+
+    .how-it-works {
+      background: #e0f7fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+
+    .how-it-works h2 {
+      color: #00695c;
+    }
+  </style>
 </head>
 <body>
-  <!-- Logo Only -->
+  <!-- Logo -->
   <div class="logo-container">
     <img src="images/dodo-logo1.png" alt="Do-Do Dudes Logo" class="logo">
   </div>
@@ -15,42 +68,89 @@
   <main>
     <section class="intro container">
       <h2>Your #2 Problem is Our #1 Priority</h2>
-      <p>We offer reliable, affordable, and stink-free weekly cleanups so you can enjoy a fresh yard again.</p>
+      <p>Do-Do Dudes brings clean yards and happy noses—without you lifting a finger!</p>
+      <div class="big-offer">$5 First-Time Visit! 🤑</div>
       <a href="#contact" class="button">Book Your First Scoop</a>
     </section>
 
     <section class="services container">
       <h2>What We Offer</h2>
       <ul>
-        <li>✅ Weekly Cleanups</li>
+        <li>✅ Weekly & Biweekly Cleanups</li>
         <li>✅ One-Time Yard Reset</li>
         <li>✅ Sanitization Options</li>
-        <li>✅ Pet-Friendly Techs</li>
+        <li>✅ Pet-Loving, Friendly Techs</li>
       </ul>
     </section>
 
+    <section class="pricing container">
+      <h3>💵 Scoop Pricing:</h3>
+      <ul>
+        <li>🐶 One Dog: $20 weekly / $35 biweekly</li>
+        <li>➕ +$10 for each additional dog</li>
+        <li>⚡ Rush/ASAP Fee: +$20</li>
+        <li>🚛 Poop Transport Fee: +$10  
+          <br><small>(Waived if you allow us to use your own trash bin)</small></li>
+      </ul>
+
+      <h3>💳 Payment Options:</h3>
+      <ul>
+        <li>Zelle</li>
+        <li>Apple Pay</li>
+        <li>Cash</li>
+      </ul>
+    </section>
+
+    <section class="how-it-works container">
+      <h2>How It Works</h2>
+      <p>1. Book online or by text.<br>
+         2. We show up, scoop the poop, sanitize if needed.<br>
+         3. We leave your yard clean, fresh, and walk-ready.<br>
+         4. Pay easily with Zelle, Apple Pay, or Cash.</p>
+    </section>
+
     <section class="contact container" id="contact">
-      <h2>Contact Us</h2>
-      <p>Ready to ditch the doo-doo?</p>
-      <form>
-        <input type="text" placeholder="Your Name" required />
-        <input type="email" placeholder="Your Email" required />
-        <textarea placeholder="Your Message or Address" required></textarea>
+      <h2>Custom Scheduling</h2>
+      <p>Ready to ditch the doo-doo? Drop us your info below:</p>
+      <form action="https://formsubmit.co/adude.name.william@gmail.com" method="POST">
+        <input type="hidden" name="_next" value="thankyou.html">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="text" name="address" placeholder="Your Address" required>
+        <input type="tel" name="phone" placeholder="Your Phone Number" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="number" name="dogCount" placeholder="How many dogs do you have?" required>
+        <textarea name="message" placeholder="Message or Notes" required></textarea>
         <button type="submit">Send Message</button>
       </form>
     </section>
   </main>
 
-<div class="paw-trail">
-  <span>🐾</span>
-  <span>🐾</span>
-  <span>🐾</span>
-</div>
+  <div class="paw-trail">
+    <span>🐾</span>
+    <span>🐾</span>
+    <span>🐾</span>
+  </div>
 
   <footer>
     <p>&copy; 2025 Do-Do Dudes | All Rights Reserved</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+      const form = e.target;
+      const name = form.name.value.trim();
+      const address = form.address.value.trim();
+      const phone = form.phone.value.trim();
+      const email = form.email.value.trim();
+      const dogCount = form.dogCount.value.trim();
+      const message = form.message.value.trim();
+
+      const newEntry = { name, address, phone, email, dogCount, message };
+      const existing = JSON.parse(localStorage.getItem("dodo-entries")) || [];
+      existing.push(newEntry);
+
+      localStorage.setItem("dodo-entries", JSON.stringify(existing));
+    });
+  </script>
 </body>
 </html>

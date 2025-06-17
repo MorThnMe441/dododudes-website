@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You | Do-Do Dudes</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      text-align: center;
+      padding: 50px 20px;
+      background-color: #f0fff0;
+    }
+
+    .truck {
+      font-size: 60px;
+      animation: move 2s infinite;
+    }
+
+    @keyframes move {
+      0% { transform: translateX(0); opacity: 0.3; }
+      50% { transform: translateX(10px); opacity: 1; }
+      100% { transform: translateX(0); opacity: 0.3; }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #3a603a;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    a.button {
+      display: inline-block;
+      margin-top: 30px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    a.button:hover {
+      background-color: #3a923a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="truck">🚚💨</div>
+  <h1>Thank You!</h1>
+  <p>Your scoop is officially scheduled. We’ll be in touch shortly!</p>
+  <p>Until then, stay fresh and poop-free! 🐶💩</p>
+
+  <a href="index.html" class="button">Back to Home</a>
+
+</body>
+</html>
