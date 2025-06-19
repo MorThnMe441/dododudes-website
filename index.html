@@ -3,153 +3,190 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Do-Do Dudes | Poop Removal Pros</title>
+  <title>Admin Dashboard | Do-Do Dudes</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .logo-container {
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0fff7;
+      padding: 30px;
+    }
+
+    h1 {
       text-align: center;
-      margin-top: 20px;
+      color: #2e7d32;
     }
 
-    .logo {
-      width: 260px; /* larger size */
-      max-width: 90%;
-      height: auto;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-    }
-
-    .big-offer {
-      font-size: 2rem;
-      color: #ffffff;
-      background-color: #4CAF50;
-      padding: 10px 20px;
-      border-radius: 15px;
-      margin: 20px auto;
-      width: fit-content;
-      animation: pop 1s ease-in-out infinite alternate;
-    }
-
-    @keyframes pop {
-      from { transform: scale(1); }
-      to { transform: scale(1.05); }
-    }
-
-    .pricing {
-      background: #fffbe6;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 30px auto;
-      text-align: left;
-    }
-
-    .pricing h3 {
-      color: #3a603a;
-      margin-bottom: 10px;
-    }
-
-    .how-it-works {
-      background: #e0f7fa;
-      padding: 20px;
-      border-radius: 10px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
       margin-top: 30px;
     }
 
-    .how-it-works h2 {
-      color: #00695c;
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background: #d0f0d0;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.4);
+    }
+
+    #login {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    #login input {
+      padding: 10px;
+      width: 80%;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    #login button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #3a603a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #admin-panel {
+      display: none;
+    }
+
+    .signout {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #f44336;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <!-- Logo -->
-  <div class="logo-container">
-    <img src="images/dodo-logo1.png" alt="Do-Do Dudes Logo" class="logo">
+
+  <div id="login">
+    <h2>Admin Login</h2>
+    <input type="password" id="password" placeholder="Enter Password" />
+    <br>
+    <button onclick="checkPassword()">Enter</button>
+    <p id="error" style="color: red; display: none;">Incorrect password.</p>
   </div>
 
-  <main>
-    <section class="intro container">
-      <h2>Your #2 Problem is Our #1 Priority</h2>
-      <p>Do-Do Dudes brings clean yards and happy noses—without you lifting a finger!</p>
-      <div class="big-offer">$5 First-Time Visit! 🤑</div>
-      <a href="#contact" class="button">Book Your First Scoop</a>
-    </section>
+  <div id="admin-panel">
+    <h1>📋 Do-Do Dudes Admin Dashboard</h1>
+    <table id="customerTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Dog Count</th>
+          <th>Done ✅</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-    <section class="services container">
-      <h2>What We Offer</h2>
-      <ul>
-        <li>✅ Weekly & Biweekly Cleanups</li>
-        <li>✅ One-Time Yard Reset</li>
-        <li>✅ Sanitization Options</li>
-        <li>✅ Pet-Loving, Friendly Techs</li>
-      </ul>
-    </section>
-
-    <section class="pricing container">
-      <h3>💵 Scoop Pricing:</h3>
-      <ul>
-        <li>🐶 One Dog: $20 weekly / $35 biweekly</li>
-        <li>➕ +$10 for each additional dog</li>
-        <li>⚡ Rush/ASAP Fee: +$20</li>
-        <li>🚛 Poop Transport Fee: +$10  
-          <br><small>(Waived if you allow us to use your own trash bin)</small></li>
-      </ul>
-
-      <h3>💳 Payment Options:</h3>
-      <ul>
-        <li>Zelle</li>
-        <li>Apple Pay</li>
-        <li>Cash</li>
-      </ul>
-    </section>
-
-    <section class="how-it-works container">
-      <h2>How It Works</h2>
-      <p>1. Book online or by text.<br>
-         2. We show up, scoop the poop, sanitize if needed.<br>
-         3. We leave your yard clean, fresh, and walk-ready.<br>
-         4. Pay easily with Zelle, Apple Pay, or Cash.</p>
-    </section>
-
-    <section class="contact container" id="contact">
-      <h2>Custom Scheduling</h2>
-      <p>Ready to ditch the doo-doo? Drop us your info below:</p>
-      <form action="https://formsubmit.co/2ec002fe977e52a6891990f837905716" method="POST">
-        <input type="hidden" name="_next" value="thankyou.html">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="text" name="address" placeholder="Your Address" required>
-        <input type="tel" name="phone" placeholder="Your Phone Number" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <input type="number" name="dogCount" placeholder="How many dogs do you have?" required>
-        <textarea name="message" placeholder="Message or Notes" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-    </section>
-  </main>
-  
-    <span>🐾</span>
-    <span>🐾</span>
-    <span>🐾</span>
+    <a href="index.html" class="signout">🔓 Sign Out</a>
   </div>
-
-  <footer>
-    <p>&copy; 2025 Do-Do Dudes | All Rights Reserved</p>
-  </footer>
 
   <script>
-    document.querySelector("form").addEventListener("submit", function (e) {
-      const form = e.target;
-      const name = form.name.value.trim();
-      const address = form.address.value.trim();
-      const phone = form.phone.value.trim();
-      const email = form.email.value.trim();
-      const dogCount = form.dogCount.value.trim();
-      const message = form.message.value.trim();
+    const CORRECT_PASSWORD = "ILoveMy295$$$";
+    const daysUntilReset = 6 * 24 * 60 * 60 * 1000;
+    const tableBody = document.querySelector('#customerTable tbody');
+    let attempts = 0;
 
-      const newEntry = { name, address, phone, email, dogCount, message };
-      const existing = JSON.parse(localStorage.getItem("dodo-entries")) || [];
-      existing.push(newEntry);
+    function checkPassword() {
+      const input = document.getElementById('password').value;
+      if (input === CORRECT_PASSWORD) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        renderTable();
+      } else {
+        attempts++;
+        document.getElementById('error').style.display = 'block';
+        if (attempts >= 2) {
+          alert("Access denied. Redirecting to homepage.");
+          window.location.href = "index.html";
+        }
+      }
+    }
 
-      localStorage.setItem("dodo-entries", JSON.stringify(existing));
-    });
+    function saveCheckboxStates(states) {
+      localStorage.setItem('checkboxStates', JSON.stringify(states));
+      localStorage.setItem('checkboxLastSaved', Date.now());
+    }
+
+    function loadCheckboxStates() {
+      const lastSaved = parseInt(localStorage.getItem('checkboxLastSaved'), 10);
+      const now = Date.now();
+      if (isNaN(lastSaved) || now - lastSaved >= daysUntilReset) {
+        localStorage.removeItem('checkboxStates');
+        localStorage.setItem('checkboxLastSaved', now);
+        return {};
+      }
+      return JSON.parse(localStorage.getItem('checkboxStates') || '{}');
+    }
+
+    function renderTable() {
+      const checkboxStates = loadCheckboxStates();
+      const customers = JSON.parse(localStorage.getItem('dodo-entries') || '[]');
+      const sorted = [...customers].sort((a, b) => a.name.localeCompare(b.name));
+
+      tableBody.innerHTML = '';
+      sorted.forEach((entry, index) => {
+        const row = document.createElement('tr');
+
+        const nameTd = document.createElement('td');
+        nameTd.textContent = entry.name;
+        row.appendChild(nameTd);
+
+        const addressTd = document.createElement('td');
+        addressTd.textContent = entry.address;
+        row.appendChild(addressTd);
+
+        const dogTd = document.createElement('td');
+        dogTd.textContent = entry.dogCount || '1';
+        row.appendChild(dogTd);
+
+        const checkTd = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = checkboxStates[index] || false;
+        checkbox.addEventListener('change', () => {
+          checkboxStates[index] = checkbox.checked;
+          saveCheckboxStates(checkboxStates);
+        });
+        checkTd.appendChild(checkbox);
+        row.appendChild(checkTd);
+
+        tableBody.appendChild(row);
+      });
+    }
   </script>
+
 </body>
 </html>

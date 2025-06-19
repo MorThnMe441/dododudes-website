@@ -73,6 +73,17 @@
     #admin-panel {
       display: none;
     }
+
+    .signout {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #f44336;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -98,12 +109,15 @@
       </thead>
       <tbody></tbody>
     </table>
+
+    <a href="index.html" class="signout">🔓 Sign Out</a>
   </div>
 
   <script>
-    const CORRECT_PASSWORD = "ILoveMy295$$$"; // <- change this to your real password
+    const CORRECT_PASSWORD = "ILoveMy295$$$";
     const daysUntilReset = 6 * 24 * 60 * 60 * 1000;
     const tableBody = document.querySelector('#customerTable tbody');
+    let attempts = 0;
 
     function checkPassword() {
       const input = document.getElementById('password').value;
@@ -112,7 +126,12 @@
         document.getElementById('admin-panel').style.display = 'block';
         renderTable();
       } else {
+        attempts++;
         document.getElementById('error').style.display = 'block';
+        if (attempts >= 2) {
+          alert("Access denied. Redirecting to homepage.");
+          window.location.href = "index.html";
+        }
       }
     }
 
