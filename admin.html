@@ -114,79 +114,89 @@
   </div>
 
   <script>
-    const CORRECT_PASSWORD = "ILoveMy295$$$";
-    const daysUntilReset = 6 * 24 * 60 * 60 * 1000;
-    const tableBody = document.querySelector('#customerTable tbody');
-    let attempts = 0;
+  const CORRECT_PASSWORD = "ILoveMy295$$$";
+  const daysUntilReset = 6 * 24 * 60 * 60 * 1000;
+  const tableBody = document.querySelector('#customerTable tbody');
+  let attempts = 0;
 
-    function checkPassword() {
-      const input = document.getElementById('password').value;
-      if (input === CORRECT_PASSWORD) {
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        renderTable();
-      } else {
-        attempts++;
-        document.getElementById('error').style.display = 'block';
-        if (attempts >= 2) {
-          alert("Access denied. Redirecting to homepage.");
-          window.location.href = "index.html";
-        }
+  function checkPassword() {
+    const input = document.getElementById('password').value;
+    if (input === CORRECT_PASSWORD) {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      renderTable();
+    } else {
+      attempts++;
+      document.getElementById('error').style.display = 'block';
+      if (attempts >= 2) {
+        alert("Access denied. Redirecting to homepage.");
+        window.location.href = "index.html";
       }
     }
+  }
 
-    function saveCheckboxStates(states) {
-      localStorage.setItem('checkboxStates', JSON.stringify(states));
-      localStorage.setItem('checkboxLastSaved', Date.now());
+  function saveCheckboxStates(states) {
+    localStorage.setItem('checkboxStates', JSON.stringify(states));
+    localStorage.setItem('checkboxLastSaved', Date.now());
+  }
+
+  function loadCheckboxStates() {
+    const lastSaved = parseInt(localStorage.getItem('checkboxLastSaved'), 10);
+    const now = Date.now();
+    if (isNaN(lastSaved) || now - lastSaved >= daysUntilReset) {
+      localStorage.removeItem('checkboxStates');
+      localStorage.setItem('checkboxLastSaved', now);
+      return {};
+    }
+    return JSON.parse(localStorage.getItem('checkboxStates') || '{}');
+  }
+
+  async function renderTable() {
+    const checkboxStates = loadCheckboxStates();
+    let customers = [];
+
+    try {
+      const res = await fetch('/submissions');
+      customers = await res.json();
+    } catch (err) {
+      alert("Unable to fetch customer data.");
+      console.error(err);
+      return;
     }
 
-    function loadCheckboxStates() {
-      const lastSaved = parseInt(localStorage.getItem('checkboxLastSaved'), 10);
-      const now = Date.now();
-      if (isNaN(lastSaved) || now - lastSaved >= daysUntilReset) {
-        localStorage.removeItem('checkboxStates');
-        localStorage.setItem('checkboxLastSaved', now);
-        return {};
-      }
-      return JSON.parse(localStorage.getItem('checkboxStates') || '{}');
-    }
+    const sorted = [...customers].sort((a, b) => a.name.localeCompare(b.name));
 
-    function renderTable() {
-      const checkboxStates = loadCheckboxStates();
-      const customers = JSON.parse(localStorage.getItem('dodo-entries') || '[]');
-      const sorted = [...customers].sort((a, b) => a.name.localeCompare(b.name));
+    tableBody.innerHTML = '';
+    sorted.forEach((entry, index) => {
+      const row = document.createElement('tr');
 
-      tableBody.innerHTML = '';
-      sorted.forEach((entry, index) => {
-        const row = document.createElement('tr');
+      const nameTd = document.createElement('td');
+      nameTd.textContent = entry.name;
+      row.appendChild(nameTd);
 
-        const nameTd = document.createElement('td');
-        nameTd.textContent = entry.name;
-        row.appendChild(nameTd);
+      const addressTd = document.createElement('td');
+      addressTd.textContent = entry.address;
+      row.appendChild(addressTd);
 
-        const addressTd = document.createElement('td');
-        addressTd.textContent = entry.address;
-        row.appendChild(addressTd);
+      const dogTd = document.createElement('td');
+      dogTd.textContent = entry.dogCount || '1';
+      row.appendChild(dogTd);
 
-        const dogTd = document.createElement('td');
-        dogTd.textContent = entry.dogCount || '1';
-        row.appendChild(dogTd);
-
-        const checkTd = document.createElement('td');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = checkboxStates[index] || false;
-        checkbox.addEventListener('change', () => {
-          checkboxStates[index] = checkbox.checked;
-          saveCheckboxStates(checkboxStates);
-        });
-        checkTd.appendChild(checkbox);
-        row.appendChild(checkTd);
-
-        tableBody.appendChild(row);
+      const checkTd = document.createElement('td');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = checkboxStates[index] || false;
+      checkbox.addEventListener('change', () => {
+        checkboxStates[index] = checkbox.checked;
+        saveCheckboxStates(checkboxStates);
       });
-    }
-  </script>
+      checkTd.appendChild(checkbox);
+      row.appendChild(checkTd);
+
+      tableBody.appendChild(row);
+    });
+  }
+</script>
 
 </body>
 </html>

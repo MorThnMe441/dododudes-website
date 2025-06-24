@@ -60,8 +60,7 @@
     <section class="contact container" id="contact">
       <h2>Custom Scheduling</h2>
       <p>Ready to ditch the doo-doo? Drop us your info below:</p>
-      <form action="https://formsubmit.co/2ec002fe977e52a6891990f837905716" method="POST">
-        <input type="hidden" name="_next" value="https://dododudes-website.vercel.app/thankyou.html">
+      <form id="contactForm">
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="text" name="address" placeholder="Your Address" required>
         <input type="tel" name="phone" placeholder="Your Phone Number" required>
@@ -83,23 +82,40 @@
       window.location.href = "admin.html";
     });
 
-    document.querySelector("form").addEventListener("submit", function (e) {
+    document.getElementById("contactForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
       const form = e.target;
-      const name = form.name.value.trim();
-      const address = form.address.value.trim();
-      const phone = form.phone.value.trim();
-      const email = form.email.value.trim();
-      const dogCount = form.dogCount.value.trim();
-      const message = form.message.value.trim();
 
-      const newEntry = { name, address, phone, email, dogCount, message };
-      const existing = JSON.parse(localStorage.getItem("dodo-entries")) || [];
-      existing.push(newEntry);
+      const data = {
+        name: form.name.value.trim(),
+        address: form.address.value.trim(),
+        phone: form.phone.value.trim(),
+        email: form.email.value.trim(),
+        dogCount: form.dogCount.value.trim(),
+        message: form.message.value.trim()
+      };
 
-      localStorage.setItem("dodo-entries", JSON.stringify(existing));
+      try {
+        const res = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert("Message sent and saved successfully!");
+          form.reset();
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      } catch (err) {
+        alert("Error sending form.");
+        console.error(err);
+      }
     });
   </script>
 
+  <br>
   <footer>
     <p>&copy; 2025 Do-Do Dudes | All Rights Reserved</p>
   </footer>

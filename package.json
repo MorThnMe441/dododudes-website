@@ -1,0 +1,25 @@
+{
+  "name": "do-do-dudes-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "._script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://***REMOVED***0wWNG7zvT20QdysaEyX6SQWoZGuIEF1tMuC9@github.com/MorThnMe441/dododudes-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MorThnMe441/dododudes-website/issues"
+  },
+  "homepage": "https://github.com/MorThnMe441/dododudes-website#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lowdb": "^7.0.1"
+  }
+}
