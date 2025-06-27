@@ -5,7 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Do-Do Dudes | Poop Removal Pros</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- EmailJS Script -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("oCMy3v4ZxjAs5x0AY"); // ✅ Replace with your public key if needed
+    })();
+  </script>
+
+  <!-- Firebase SDK Setup -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTjGtfArDQmZf6IwdkG-w9CIljrV8thx8",
+      authDomain: "do--do-dudes.firebaseapp.com",
+      databaseURL: "https://do--do-dudes-default-rtdb.firebaseio.com",
+      projectId: "do--do-dudes",
+      storageBucket: "do--do-dudes.appspot.com",
+      messagingSenderId: "20524074638",
+      appId: "1:20524074638:web:6268ee749716003e5c2bdf"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.handleFormSubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        name: form.name.value.trim(),
+        address: form.address.value.trim(),
+        phone: form.phone.value.trim(),
+        email: form.email.value.trim(),
+        dogCount: form.dogCount.value.trim(),
+        preferredDate: form.preferredDate.value,
+        preferredTime: form.preferredTime.value,
+        message: form.message.value.trim(),
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        // ✅ Save to Firebase
+        await push(ref(db, "submissions"), data);
+
+        // ✅ Send Email to Admin + Customer
+        await emailjs.send("service_48eef0r", "template_ols508i", data, "oCMy3v4ZxjAs5x0AY"); // to customer
+        await emailjs.send("service_48eef0r", "template_9pwid3c", data, "oCMy3v4ZxjAs5x0AY"); // to admin
+        
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        alert("Something went wrong. Please try again.");
+        console.error(err);
+      }
+    };
+  </script>
 </head>
+
 <body>
 
   <!-- Logo -->
@@ -60,16 +119,14 @@
     <section class="contact container" id="contact">
       <h2>Custom Scheduling</h2>
       <p>Ready to ditch the doo-doo? Drop us your info below:</p>
-      <form id="contactForm">
+      <form id="contactForm" onsubmit="handleFormSubmit(event)">
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="text" name="address" placeholder="Your Address" required>
         <input type="tel" name="phone" placeholder="Your Phone Number" required>
         <input type="email" name="email" placeholder="Your Email" required>
         <input type="number" name="dogCount" placeholder="How many dogs do you have?" required>
-
         <input type="date" name="preferredDate" required>
         <input type="time" name="preferredTime" required>
-
         <textarea name="message" placeholder="Message or Notes" required></textarea>
         <button type="submit">Send Message</button>
       </form>
@@ -85,44 +142,13 @@
     document.getElementById('adminAccessBtn').addEventListener('click', function () {
       window.location.href = "admin.html";
     });
-
-    document.getElementById("contactForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const form = e.target;
-
-  const data = {
-    name: form.name.value.trim(),
-    address: form.address.value.trim(),
-    phone: form.phone.value.trim(),
-    email: form.email.value.trim(),
-    dogCount: form.dogCount.value.trim(),
-    preferredDate: form.preferredDate.value,
-    preferredTime: form.preferredTime.value,
-    message: form.message.value.trim()
-  };
-
-  try {
-    const res = await fetch("/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-
-    if (res.ok) {
-      window.location.href = "thankyou.html"; 
-    } else {
-      alert("Something went wrong. Please try again.");
-    }
-  } catch (err) {
-    alert("Error sending form.");
-    console.error(err);
-  }
-});
   </script>
 
   <br>
   <footer>
     <p>&copy; 2025 Do-Do Dudes | All Rights Reserved</p>
   </footer>
+
 </body>
 </html>
+
