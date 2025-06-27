@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | Do-Do Dudes</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0fff7;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background: #d0f0d0;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.4);
+    }
+
+    #login {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    #login input {
+      padding: 10px;
+      width: 80%;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    #login button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #3a603a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #admin-panel {
+      display: none;
+    }
+
+    .signout {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #f44336;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="login">
+    <h2>Admin Login</h2>
+    <input type="password" id="password" placeholder="Enter Password" />
+    <br>
+    <button onclick="checkPassword()">Enter</button>
+    <p id="error" style="color: red; display: none;">Incorrect password.</p>
+  </div>
+
+  <div id="admin-panel">
+    <h1>📋 Do-Do Dudes Admin Dashboard</h1>
+    <table id="customerTable">
+      <thead>
+        <tr>
+         <th>Name</th>
+         <th>Address</th>
+         <th>Phone</th>
+         <th>Email</th>
+         <th>Date</th>
+         <th>Time</th>
+         <th>Dog Count</th>
+         <th>Done ✅</th>
+       </tr>
+    </thead>
+      <tbody></tbody>
+    </table>
+
+    <a href="index.html" class="signout">🔓 Sign Out</a>
+  </div>
+
+  <script>
+  const CORRECT_PASSWORD = "B.R.O.S290$$$j";
+  const daysUntilReset = 6 * 24 * 60 * 60 * 1000;
+  const tableBody = document.querySelector('#customerTable tbody');
+  let attempts = 0;
+
+  function checkPassword() {
+    const input = document.getElementById('password').value;
+    if (input === CORRECT_PASSWORD) {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      renderTable();
+    } else {
+      attempts++;
+      document.getElementById('error').style.display = 'block';
+      if (attempts >= 2) {
+        alert("Access denied. Redirecting to homepage.");
+        window.location.href = "index.html";
+      }
+    }
+  }
+
+  function saveCheckboxStates(states) {
+    localStorage.setItem('checkboxStates', JSON.stringify(states));
+    localStorage.setItem('checkboxLastSaved', Date.now());
+  }
+
+  function loadCheckboxStates() {
+    const lastSaved = parseInt(localStorage.getItem('checkboxLastSaved'), 10);
+    const now = Date.now();
+    if (isNaN(lastSaved) || now - lastSaved >= daysUntilReset) {
+      localStorage.removeItem('checkboxStates');
+      localStorage.setItem('checkboxLastSaved', now);
+      return {};
+    }
+    return JSON.parse(localStorage.getItem('checkboxStates') || '{}');
+  }
+
+  async function renderTable() {
+    const checkboxStates = loadCheckboxStates();
+    let customers = [];
+
+    try {
+      const res = await fetch('/submissions');
+      customers = await res.json();
+    } catch (err) {
+      alert("Unable to fetch customer data.");
+      console.error(err);
+      return;
+    }
+
+    const sorted = [...customers].sort((a, b) => a.name.localeCompare(b.name));
+
+    tableBody.innerHTML = '';
+    sorted.forEach((entry, index) => {
+      const row = document.createElement('tr');
+
+      const nameTd = document.createElement('td');
+      nameTd.textContent = entry.name;
+      row.appendChild(nameTd);
+
+      const addressTd = document.createElement('td');
+      addressTd.textContent = entry.address;
+      row.appendChild(addressTd);
+
+      const phoneTd = document.createElement('td');
+      phoneTd.textContent = entry.phone || '';
+      row.appendChild(phoneTd);
+
+      const emailTd = document.createElement('td');
+      emailTd.textContent = entry.email || '';
+      row.appendChild(emailTd);
+
+      const dateTd = document.createElement('td');
+      dateTd.textContent = entry.preferredDate || '';
+      row.appendChild(dateTd);
+
+      const timeTd = document.createElement('td');
+      timeTd.textContent = entry.preferredTime || '';
+      row.appendChild(timeTd);
+
+      const dogTd = document.createElement('td');
+      dogTd.textContent = entry.dogCount || '1';
+      row.appendChild(dogTd);
+
+      const checkTd = document.createElement('td');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = checkboxStates[index] || false;
+      checkbox.addEventListener('change', () => {
+        checkboxStates[index] = checkbox.checked;
+        saveCheckboxStates(checkboxStates);
+      });
+      checkTd.appendChild(checkbox);
+      row.appendChild(checkTd);
+
+      tableBody.appendChild(row);
+    });
+  }
+</script>
+
+</body>
+</html>
