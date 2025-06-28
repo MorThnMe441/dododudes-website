@@ -52,15 +52,21 @@
         // ✅ Save to Firebase
         await push(ref(db, "submissions"), data);
 
-        // ✅ Send Email to Admin + Customer
-        await emailjs.send("service_48eef0r", "template_ols508i", data, "oCMy3v4ZxjAs5x0AY"); // to customer
-        await emailjs.send("service_48eef0r", "template_9pwid3c", data, "oCMy3v4ZxjAs5x0AY"); // to admin
-        
+        // ✅ Test logs for EmailJS
+        console.log("Sending to customer...");
+        const customerResult = await emailjs.send("service_48eef0r", "template_ols508i", data);
+        console.log("Customer email sent:", customerResult.status);
+
+        console.log("Sending to admin...");
+        const adminResult = await emailjs.send("service_48eef0r", "template_9pwid3c", data);
+        console.log("Admin email sent:", adminResult.status);
+
         window.location.href = "thankyou.html";
       } catch (err) {
-        alert("Something went wrong. Please try again.");
-        console.error(err);
-      }
+  alert("Something went wrong. Please try again.");
+  console.error("Email/Firebase error:", err);
+}
+
     };
   </script>
 </head>
