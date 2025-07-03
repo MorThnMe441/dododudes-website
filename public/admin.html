@@ -96,10 +96,12 @@
 
     .return-home {
       display: block;
-      text-align: center;
+      max-width: 200px;
+      margin: 0 auto;
       font-size: 1rem;
-      color: #307c33;
+      color: #3a603a;
       text-decoration: underline;
+      text-align: center;
     }
   </style>
 </head>
@@ -111,6 +113,7 @@
     <button onclick="checkPassword()">Enter</button>
     <p id="error" style="color: red; display: none;">Incorrect password.</p>
   </div>
+
   <a href="index.html" class="return-home">🔙 Return to Home</a>
 
   <div id="admin-panel">
@@ -139,7 +142,16 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, get, child, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const firebaseConfig = { /* same config */ };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTjGtfArDQmZf6IwdkG-w9CIljrV8thx8",
+      authDomain: "do--do-dudes.firebaseapp.com",
+      databaseURL: "https://do--do-dudes-default-rtdb.firebaseio.com",
+      projectId: "do--do-dudes",
+      storageBucket: "do--do-dudes.appspot.com",
+      messagingSenderId: "20524074638",
+      appId: "1:20524074638:web:6268ee749716003e5c2bdf"
+    };
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
@@ -273,5 +285,6 @@
   </script>
 </body>
 </html>
+
 
 
